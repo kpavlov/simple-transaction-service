@@ -5,10 +5,10 @@ import com.github.kpavlov.txservice.domain.AccountId
 import com.github.kpavlov.txservice.domain.AccountMother
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
+import org.apache.commons.lang3.RandomUtils.nextInt
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.util.*
 
 internal class TransactionServiceImplTest {
 
@@ -21,8 +21,6 @@ internal class TransactionServiceImplTest {
     private lateinit var toAccount: Account
     private var fromBalance = 0
     private var toBalance = 0
-
-    private val random = Random()
 
     @BeforeEach
     fun setUp() {
@@ -44,7 +42,7 @@ internal class TransactionServiceImplTest {
     @Test
     fun shouldTransferMoney() {
         //given
-        val amount = 10 + random.nextInt(fromBalance - 10)
+        val amount = nextInt(10, fromBalance - 10)
 
         //when
         val result = subject.transfer(amount, fromAccountId, toAccountId)

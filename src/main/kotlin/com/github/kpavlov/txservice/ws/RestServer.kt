@@ -20,7 +20,7 @@ class RestServer(host: String = "localhost", port: Int = 8080) {
     private lateinit var server: Channel
 
     fun start() {
-        val resourceConfig = with(ResourceConfig.forApplication(JerseyApplication())) {
+        val resourceConfig = with(ResourceConfig.forApplication(JerseyApplication)) {
             register(JacksonFeature::class.java)
             register(ContextResolver<ObjectMapper> {
                 ObjectMapper().registerModule(KotlinModule())

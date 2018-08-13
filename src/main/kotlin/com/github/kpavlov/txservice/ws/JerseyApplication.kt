@@ -4,7 +4,7 @@ import com.github.kpavlov.txservice.service.AccountServiceImpl
 import com.github.kpavlov.txservice.service.TransactionServiceImpl
 import javax.ws.rs.core.Application
 
-class JerseyApplication : Application() {
+object JerseyApplication : Application() {
 
     private val accountService = AccountServiceImpl()
     private val transactionService = TransactionServiceImpl(accountService)
