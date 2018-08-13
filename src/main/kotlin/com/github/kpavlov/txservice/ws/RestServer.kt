@@ -1,11 +1,14 @@
 package com.github.kpavlov.txservice.ws
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.netty.channel.Channel
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.glassfish.jersey.netty.httpserver.NettyHttpContainerProvider
 import org.glassfish.jersey.server.ResourceConfig
 import org.slf4j.LoggerFactory
 import java.net.URI
+import javax.ws.rs.ext.ContextResolver
 
 
 class RestServer(host: String = "localhost", port: Int = 8080) {
@@ -17,10 +20,13 @@ class RestServer(host: String = "localhost", port: Int = 8080) {
     private lateinit var server: Channel
 
     fun start() {
-        val resourceConfig = ResourceConfig(
-                AccountsResource::class.java,
-                TransactionsResource::class.java)
-        resourceConfig.register(JacksonFeature::class.java)
+        val resourceConfig = with(ResourceConfig.forApplication(JerseyApplication())) {
+            register(JacksonFeature::class.java)
+            register(ContextResolver<ObjectMapper> {
+                ObjectMapper().registerModule(KotlinModule())
+            })
+            this
+        }
 
         logger.info("Starting HTTP server on {}", BASE_URI)
         server = NettyHttpContainerProvider.createHttp2Server(BASE_URI, resourceConfig, null)

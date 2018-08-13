@@ -1,3 +1,8 @@
 package com.github.kpavlov.txservice.ws
 
-class AccountsResource : AccountsApi()
+import com.github.kpavlov.txservice.service.AccountService
+
+
+class AccountsResource(private val accountService: AccountService) : AccountsApi() {
+
+}

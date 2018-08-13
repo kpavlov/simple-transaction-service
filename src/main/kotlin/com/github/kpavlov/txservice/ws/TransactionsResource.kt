@@ -1,3 +1,5 @@
 package com.github.kpavlov.txservice.ws
 
-class TransactionsResource : TransactionsApi()
+import com.github.kpavlov.txservice.service.TransactionService
+
+class TransactionsResource(private val transactionService: TransactionService) : TransactionsApi()
