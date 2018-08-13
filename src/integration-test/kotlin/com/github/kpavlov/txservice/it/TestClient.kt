@@ -1,6 +1,9 @@
 package com.github.kpavlov.txservice.it
 
 import com.github.kpavlov.txservice.domain.AccountId
+import com.github.kpavlov.txservice.ws.model.AccountDetails
+import com.github.kpavlov.txservice.ws.model.CreateAccountRequest
+import com.github.kpavlov.txservice.ws.model.CreateTransactionRequest
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import org.apache.http.HttpStatus

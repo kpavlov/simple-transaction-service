@@ -1,6 +1,7 @@
 package com.github.kpavlov.txservice.it
 
 
+import com.github.kpavlov.txservice.ws.model.AccountDetails
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest

@@ -222,12 +222,6 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
-                        <!--<configuration>-->
-                        <!--<sourceDirs>-->
-                        <!--<sourceDir>${project.basedir}/src/main/kotlin</sourceDir>-->
-                        <!--<sourceDir>${project.basedir}/target/generated-sources/swagger/src/gen/java</sourceDir>-->
-                        <!--</sourceDirs>-->
-                        <!--</configuration>-->
                     </execution>
                     <execution>
                         <id>test-compile</id>
@@ -235,12 +229,6 @@
                         <goals>
                             <goal>test-compile</goal>
                         </goals>
-                        <!--<configuration>-->
-                        <!--<sourceDirs>-->
-                        <!--<sourceDir>${project.basedir}/src/test/kotlin</sourceDir>-->
-                        <!--<sourceDir>${project.basedir}/target/generated-sources/swagger/src/gen/java</sourceDir>-->
-                        <!--</sourceDirs>-->
-                        <!--</configuration>-->
                     </execution>
                 </executions>
                 <configuration>
