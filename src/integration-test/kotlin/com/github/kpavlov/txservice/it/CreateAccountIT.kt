@@ -26,7 +26,7 @@ class CreateAccountIT : AbstractIT() {
         // and then
         val accountDetails = TestClient.getAccountDetails(accountId)
 
-        assertThat(accountId).`as`("accountDetails").isInstanceOf(AccountDetails::class.java)
+        assertThat(accountDetails).`as`("accountDetails").isInstanceOf(AccountDetails::class.java)
 
         with(accountDetails) {
             assertThat(id).`as`("account.id").isEqualTo(accountId)
