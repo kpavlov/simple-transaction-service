@@ -14,7 +14,7 @@ internal class TransactionServiceImplTest {
 
     private lateinit var subject: TransactionServiceImpl
 
-    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountRepository: AccountService
     private lateinit var fromAccountId: AccountId
     private lateinit var fromAccount: Account
     private lateinit var toAccountId: AccountId

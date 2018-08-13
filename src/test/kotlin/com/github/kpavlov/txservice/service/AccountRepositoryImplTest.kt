@@ -8,7 +8,7 @@ import java.util.*
 
 internal class AccountRepositoryImplTest {
 
-    private val subject = AccountRepositoryImpl()
+    private val subject = AccountServiceImpl()
 
     @Test
     fun shouldCreateAndGetAccount() {

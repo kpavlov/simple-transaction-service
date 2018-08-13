@@ -5,7 +5,7 @@ import com.github.kpavlov.txservice.domain.AccountId
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-class AccountRepositoryImpl : AccountRepository {
+class AccountServiceImpl : AccountService {
 
     private val accounts = ConcurrentHashMap<AccountId, Account>()
 
