@@ -14,7 +14,7 @@ internal class TransactionServiceImplTest {
 
     private lateinit var subject: TransactionServiceImpl
 
-    private lateinit var accountRepository: AccountService
+    private lateinit var accountService: AccountService
     private lateinit var fromAccountId: AccountId
     private lateinit var fromAccount: Account
     private lateinit var toAccountId: AccountId
@@ -24,8 +24,8 @@ internal class TransactionServiceImplTest {
 
     @BeforeEach
     fun setUp() {
-        accountRepository = mock()
-        subject = TransactionServiceImpl(accountRepository)
+        accountService = mock()
+        subject = TransactionServiceImpl(accountService)
 
         fromAccount = AccountMother.createRandomAccount()
         fromAccountId = fromAccount.id
@@ -35,8 +35,8 @@ internal class TransactionServiceImplTest {
         toAccountId = toAccount.id
         toBalance = toAccount.getBalance()
 
-        whenever(accountRepository.getAccount(fromAccountId)).thenReturn(fromAccount)
-        whenever(accountRepository.getAccount(toAccountId)).thenReturn(toAccount)
+        whenever(accountService.getAccount(fromAccountId)).thenReturn(fromAccount)
+        whenever(accountService.getAccount(toAccountId)).thenReturn(toAccount)
     }
 
     @Test
@@ -72,7 +72,7 @@ internal class TransactionServiceImplTest {
     @Test
     fun shouldNotTransferFromUnknownAccount() {
         //given
-        whenever(accountRepository.getAccount(fromAccountId)).thenReturn(null)
+        whenever(accountService.getAccount(fromAccountId)).thenReturn(null)
         val amount = fromBalance - 1
 
         //then
@@ -86,7 +86,7 @@ internal class TransactionServiceImplTest {
     @Test
     fun shouldNotTransferToUnknownAccount() {
         //given
-        whenever(accountRepository.getAccount(toAccountId)).thenReturn(null)
+        whenever(accountService.getAccount(toAccountId)).thenReturn(null)
         val amount = fromBalance - 1
 
         //when
