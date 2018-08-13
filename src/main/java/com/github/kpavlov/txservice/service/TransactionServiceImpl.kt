@@ -7,9 +7,10 @@ internal class TransactionServiceImpl(private val accountRepository: AccountRepo
     override fun transfer(amountCents: Int, fromAccountId: AccountId, toAccountId: AccountId): TransactionResult {
         val fromAccount = accountRepository.getAccount(fromAccountId)
                 ?: return TransactionResult.DEBIT_ACCOUNT_NOT_FOUND
-        val toAccount = accountRepository.getAccount(toAccountId) ?: return TransactionResult.CREDIT_ACCOUNT_NOT_FOUND
+        val toAccount = accountRepository.getAccount(toAccountId)
+                ?: return TransactionResult.CREDIT_ACCOUNT_NOT_FOUND
 
-        val result = fromAccount.doWithLock { fromAcc ->
+        return fromAccount.doWithLock { fromAcc ->
 
             if (fromAcc.getBalance() < amountCents) {
                 return@doWithLock TransactionResult.NOT_ENOUGH_FUNDS
@@ -21,8 +22,6 @@ internal class TransactionServiceImpl(private val accountRepository: AccountRepo
                 TransactionResult.SUCCESS
             }
         }
-
-        return result
     }
 
 
