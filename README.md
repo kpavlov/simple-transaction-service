@@ -11,3 +11,13 @@ Following assumptions were made for the sake of simplicity:
  - All accounts are using the same currency. Currency conversion is not supported. Currency is ommited in APIs and model.
  - Transaction history is not required at the moment. So, there is only **create** operation for transacitons and no **get** operations.
  - Money transfer is synchronous operation. Delayed and distributed (to third-party banks) transactions are not supported.
+
+## Frameworks/Libraries
+
+* JDK 8+
+* Kotlin 1.2 (1.2.60)
+* JUnit 5
+* Jersey2 + Netty 4.1
+* Jackson
+* Open API 2.0 (Swagger)
+* Maven 3
