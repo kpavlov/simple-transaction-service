@@ -14,9 +14,11 @@ internal class AccountServiceImplTest {
     fun shouldCreateAndGetAccount() {
         //given
         val initialBalance = Random().nextInt(10000) + 1
+
         //when
         val result = subject.createAccount(initialBalance)
         val accountId = result.id
+
         //then
         assertThat(accountId).isInstanceOf(AccountId::class.java)
 
@@ -33,6 +35,7 @@ internal class AccountServiceImplTest {
     fun shouldNotGetNotExistingAccount() {
         //when
         val account = subject.getAccount(UUID.randomUUID().toString())
+
         //then
         assertThat(account).isNull()
     }

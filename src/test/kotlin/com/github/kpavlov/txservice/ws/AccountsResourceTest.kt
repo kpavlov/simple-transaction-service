@@ -45,8 +45,10 @@ internal class AccountsResourceTest {
     fun shouldCreateAccount() {
         //given
         whenever(accountService.createAccount(amountCents)).thenReturn(account)
+
         //when
         val response = subject.createAccount(createRequest)
+
         //then
         assertThat(response.status).`as`("httpStatus").isEqualTo(HttpStatus.SC_CREATED)
         assertThat(response.location).`as`("Location").isEqualTo(URI("/accounts/$accountId"))
@@ -57,8 +59,10 @@ internal class AccountsResourceTest {
     fun shouldGetAccountDetails() {
         //given
         whenever(accountService.getAccount(account.id)).thenReturn(account)
+
         //when
         val response = subject.getAccountDetails(account.id)
+
         //then
         assertThat(response.status).`as`("httpStatus").isEqualTo(HttpStatus.SC_OK)
         assertResponseBody(response)
