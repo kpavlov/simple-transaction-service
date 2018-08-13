@@ -1,0 +1,167 @@
+swagger: '2.0'
+info:
+  title: Bank Transactions API
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 1.0.0
+host: localhost:8080
+schemes:
+- http
+produces:
+- application/json
+responses:
+  400BadRequest:
+    description: Bad request parameters
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  404NotFound:
+    description: Object not found
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  422Unprocessable:
+    description: Request can not be processed
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  500InternalServerError:
+    description: Internal server error
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+paths:
+  /accounts:
+    post:
+      operationId: createAccount
+      summary: Creates new account
+      description: Creates new account with initial balance
+      tags:
+      - accounts
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: request
+        schema:
+          $ref: '#/definitions/CreateAccountRequest'
+      responses:
+        201:
+          description: Account created
+          headers:
+            Location:
+              description: Account resource Uri
+              type: string
+          schema:
+            $ref: '#/definitions/AccountDetails'
+        400:
+          $ref: '#/responses/400BadRequest'
+        500:
+          $ref: '#/responses/500InternalServerError'
+  /accounts/{accountId}:
+    get:
+      operationId: getAccountDetails
+      summary: Returns account details
+      description: Returns information about the account
+      tags:
+      - accounts
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        type: string
+        description: ID of the account to get
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/AccountDetails'
+        400:
+          $ref: '#/responses/400BadRequest'
+        404:
+          $ref: '#/responses/404NotFound'
+        500:
+          $ref: '#/responses/500InternalServerError'
+  /transactions:
+    post:
+      operationId: createTransaction
+      summary: Transfers money between account
+      description: Creates new account with initial balance
+      tags:
+      - transactions
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: request
+        schema:
+          $ref: '#/definitions/CreateTransactionRequest'
+      responses:
+        201:
+          description: Transaction created
+        400:
+          $ref: '#/responses/400BadRequest'
+        422:
+          $ref: '#/responses/422Unprocessable'
+        500:
+          $ref: '#/responses/500InternalServerError'
+
+definitions:
+  CreateAccountRequest:
+    properties:
+      initialBalance:
+        description: Initial account balance
+        type: number
+        multipleOf: 0.01
+        minimum: 0
+        default: 0
+  AccountID:
+    description: account ID
+    type: string
+    format: uuid
+  AccountDetails:
+    properties:
+      id:
+        $ref: '#/definitions/AccountID'
+      balance:
+        description: Current account balance
+        type: number
+        multipleOf: 0.01
+        minimum: 0
+    required:
+    - id
+    - balance
+  CreateTransactionRequest:
+    properties:
+      amount:
+        type: number
+        multipleOf: 0.01
+        minimum: 0.01
+      debitAccount:
+        $ref: '#/definitions/AccountID'
+      creditAccount:
+        $ref: '#/definitions/AccountID'
+    required:
+    - amount
+    - debitAccount
+    - creditAccount
+    - description
+
+  ErrorCode:
+    description: Describes operation result code
+    type: string
+    enum:
+    - NOT_ENOUGH_FUNDS
+    - DEBIT_ACCOUNT_NOT_FOUND
+    - CREDIT_ACCOUNT_NOT_FOUND
+    - INTERNAL_ERROR
+  ErrorResponse:
+    required:
+    - status
+    - code
+    properties:
+      status:
+        description: HTTP status code
+        type: integer
+      code:
+        $ref: '#/definitions/ErrorCode'
+      detail:
+        description: Specific error description
+        type: string
