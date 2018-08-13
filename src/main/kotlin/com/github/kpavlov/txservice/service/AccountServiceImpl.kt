@@ -9,12 +9,13 @@ class AccountServiceImpl : AccountService {
 
     private val accounts = ConcurrentHashMap<AccountId, Account>()
 
-    override fun createAccount(initialBalance: Int): AccountId {
+    override fun createAccount(initialBalance: Int): Account {
         val newId = UUID.randomUUID().toString()
-        if (accounts.putIfAbsent(newId, Account(newId, initialBalance)) != null) {
+        val account = Account(newId, initialBalance)
+        if (accounts.putIfAbsent(newId, account) != null) {
             throw IllegalStateException("Account $newId already exists")
         }
-        return newId
+        return account
     }
 
     override fun getAccount(accountId: AccountId): Account? {

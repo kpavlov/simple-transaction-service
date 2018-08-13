@@ -5,9 +5,8 @@ import java.util.*
 
 object AccountMother {
 
-    fun createRandomAccount() : Account {
+    fun createRandomAccount(amountCents: Int = nextInt(1_00, 1000_00)): Account {
         val id = UUID.randomUUID().toString()
-        val balance = nextInt(1_00, 1000_00)
-        return Account(id, balance)
+        return Account(id, amountCents)
     }
 }

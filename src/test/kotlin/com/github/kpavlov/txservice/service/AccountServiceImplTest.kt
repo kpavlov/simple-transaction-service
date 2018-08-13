@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.util.*
 
-internal class AccountRepositoryImplTest {
+internal class AccountServiceImplTest {
 
     private val subject = AccountServiceImpl()
 
@@ -15,7 +15,8 @@ internal class AccountRepositoryImplTest {
         //given
         val initialBalance = Random().nextInt(10000) + 1
         //when
-        val accountId = subject.createAccount(initialBalance)
+        val result = subject.createAccount(initialBalance)
+        val accountId = result.id
         //then
         assertThat(accountId).isInstanceOf(AccountId::class.java)
 

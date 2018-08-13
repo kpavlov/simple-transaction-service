@@ -5,7 +5,7 @@ import com.github.kpavlov.txservice.domain.AccountId
 
 interface AccountService {
 
-    fun createAccount(initialBalance: Int): AccountId
+    fun createAccount(initialBalance: Int): Account
 
     fun getAccount(accountId: AccountId): Account?
 }
