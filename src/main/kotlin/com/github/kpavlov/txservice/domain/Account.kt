@@ -26,7 +26,7 @@ class Account(val id: AccountId, initialBalance: Int) {
         }
     }
 
-    fun addFunds(delta: Int) {
+    fun amendBalance(delta: Int) {
         balance += delta
     }
 }

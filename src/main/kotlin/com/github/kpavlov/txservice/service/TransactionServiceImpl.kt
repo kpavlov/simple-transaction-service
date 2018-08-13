@@ -17,8 +17,8 @@ internal class TransactionServiceImpl(private val accountService: AccountService
             }
 
             toAccount.doWithLock { toAcc ->
-                fromAcc.addFunds(-amountCents)
-                toAcc.addFunds(amountCents)
+                fromAcc.amendBalance(-amountCents)
+                toAcc.amendBalance(amountCents)
                 TransactionResult.SUCCESS
             }
         }
