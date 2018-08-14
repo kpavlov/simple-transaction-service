@@ -148,7 +148,7 @@ definitions:
     description: Describes operation result code
     type: string
     enum:
-    - NOT_ENOUGH_FUNDS
+    - INSUFFICIENT_FUNDS
     - DEBIT_ACCOUNT_NOT_FOUND
     - CREDIT_ACCOUNT_NOT_FOUND
     - INTERNAL_ERROR

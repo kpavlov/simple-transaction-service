@@ -63,7 +63,7 @@ internal class TransactionServiceImplTest {
         val result = subject.transfer(amount, fromAccountId, toAccountId)
 
         //then
-        assertThat(result).isEqualTo(TransactionResult.NOT_ENOUGH_FUNDS)
+        assertThat(result).isEqualTo(TransactionResult.INSUFFICIENT_FUNDS)
 
         assertThat(fromAccount.getBalance()).isEqualTo(fromBalance)
         assertThat(toAccount.getBalance()).isEqualTo(toBalance)

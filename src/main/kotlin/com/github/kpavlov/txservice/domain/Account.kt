@@ -16,7 +16,7 @@ class Account(val id: AccountId, initialBalance: Int) {
     fun hold(delta: Int): TransactionResult {
         val currentBalance = balanceHolder.get()
         if (currentBalance < delta) {
-            return TransactionResult.NOT_ENOUGH_FUNDS
+            return TransactionResult.INSUFFICIENT_FUNDS
         }
         holdAmountHolder.addAndGet(delta)
         balanceHolder.addAndGet(-delta)
