@@ -53,11 +53,10 @@ object TestClient {
         return result.id
     }
 
-    fun <T> createTransaction(amount: BigDecimal,
-                              debitAccountId: AccountId,
-                              creditAccountId: AccountId,
-                              expectedHttpStatus: Int = HttpStatus.SC_CREATED,
-                              expectedResponse: Class<T>): T {
+    fun createTransaction(amount: BigDecimal,
+                          debitAccountId: AccountId,
+                          creditAccountId: AccountId,
+                          expectedHttpStatus: Int = HttpStatus.SC_CREATED) {
         val requestSpecification = RestAssured
                 .given()
 
@@ -68,7 +67,7 @@ object TestClient {
             this
         }
 
-        val response = requestSpecification
+        requestSpecification
                 .log().uri()
                 .log().body()
                 .body(req)
@@ -77,9 +76,9 @@ object TestClient {
                 .then()
                 .log().headers()
                 .statusCode(expectedHttpStatus)
-                .extract()
-                .body().`as`(expectedResponse)
+//                .extract()
+//                .body().`as`(expectedResponse)
 
-        return response
+//        return response
     }
 }
