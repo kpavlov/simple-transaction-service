@@ -1,32 +1,39 @@
 package com.github.kpavlov.txservice.domain
 
-import java.util.concurrent.locks.ReentrantReadWriteLock
+import com.github.kpavlov.txservice.service.TransactionResult
+import java.util.concurrent.atomic.AtomicInteger
 
 class Account(val id: AccountId, initialBalance: Int) {
 
-    private var balance = initialBalance
-
-    private val lock = ReentrantReadWriteLock()
+    private val balanceHolder = AtomicInteger(initialBalance)
+    private val holdAmountHolder = AtomicInteger()
 
     fun getBalance(): Int {
-        try {
-            lock.readLock().lock()
-            return balance
-        } finally {
-            lock.readLock().unlock()
-        }
+        return balanceHolder.get()
     }
 
-    fun <T> doWithLock(action: (Account) -> T): T {
-        try {
-            lock.writeLock().lock()
-            return action(this)
-        } finally {
-            lock.writeLock().unlock()
+    @Synchronized
+    fun hold(delta: Int): TransactionResult {
+        val currentBalance = balanceHolder.get()
+        if (currentBalance < delta) {
+            return TransactionResult.NOT_ENOUGH_FUNDS
         }
+        holdAmountHolder.addAndGet(delta)
+        balanceHolder.addAndGet(-delta)
+        return TransactionResult.SUCCESS
     }
 
-    fun amendBalance(delta: Int) {
-        balance += delta
+    /**
+     * <b>EVENTUALLY</b> withdraw held amount
+     */
+    fun withdrawHeldFunds(amountCents: Int) {
+        holdAmountHolder.addAndGet(-amountCents)
+    }
+
+    /**
+     * <b>EVENTUALLY</b> add funds to balance
+     */
+    fun addFunds(delta: Int) {
+        balanceHolder.addAndGet(delta)
     }
 }

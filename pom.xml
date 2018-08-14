@@ -278,6 +278,8 @@
                 <version>2.21.0</version>
                 <configuration>
                     <failIfNoTests>true</failIfNoTests>
+                    <forkCount>1</forkCount>
+                    <shutdown>kill</shutdown>
                 </configuration>
                 <dependencies>
                     <dependency>

@@ -4,24 +4,19 @@ import com.github.kpavlov.txservice.domain.AccountId
 
 internal class TransactionServiceImpl(private val accountService: AccountService) : TransactionService {
 
-    override fun transfer(amountCents: Int, fromAccountId: AccountId, toAccountId: AccountId): TransactionResult {
-        val fromAccount = accountService.getAccount(fromAccountId)
+    override fun transfer(amountCents: Int, debitAccountId: AccountId, creditAccountId: AccountId): TransactionResult {
+        val debitAccount = accountService.getAccount(debitAccountId)
                 ?: return TransactionResult.DEBIT_ACCOUNT_NOT_FOUND
-        val toAccount = accountService.getAccount(toAccountId)
+        val creditAccount = accountService.getAccount(creditAccountId)
                 ?: return TransactionResult.CREDIT_ACCOUNT_NOT_FOUND
 
-        return fromAccount.doWithLock { fromAcc ->
-
-            if (fromAcc.getBalance() < amountCents) {
-                return@doWithLock TransactionResult.NOT_ENOUGH_FUNDS
-            }
-
-            toAccount.doWithLock { toAcc ->
-                fromAcc.amendBalance(-amountCents)
-                toAcc.amendBalance(amountCents)
-                TransactionResult.SUCCESS
-            }
+        val result = debitAccount.hold(amountCents)
+        if (result == TransactionResult.SUCCESS) {
+            creditAccount.addFunds(amountCents)
+            debitAccount.withdrawHeldFunds(amountCents)
         }
+
+        return result
     }
 
 

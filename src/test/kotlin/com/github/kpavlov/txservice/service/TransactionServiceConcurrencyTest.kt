@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Assertions.assertTimeoutPreemptively
 import org.junit.jupiter.api.Test
 import java.time.Duration.ofSeconds
 
-private const val MAX_COROUTINES = 100
+private const val MAX_COROUTINES = 100500
+private const val TIMEOUT_SECONDS = 15L
 
 class TransactionServiceConcurrencyTest {
 
@@ -34,18 +35,22 @@ class TransactionServiceConcurrencyTest {
                 if (amountCents == 0) {
                     return@async 1
                 }
-//                println("[coroutine#$n] Transfer $amountCents¢ ${debitAccount.id} -> ${creditAccount.id}")
+                //println("[coroutine#$n] Transfer $amountCents¢ ${debitAccount.id} -> ${creditAccount.id}")
                 subject.transfer(amountCents, debitAccount.id, creditAccount.id)
                 1
             }
         }
 
-        assertTimeoutPreemptively(ofSeconds(10),
+        assertTimeoutPreemptively(ofSeconds(TIMEOUT_SECONDS),
                 { runBlocking { deffer.awaitAll() } },
                 "Deadlock detected")
+        // I don't care about cancelling running coroutines in test (because JVM will be killed eventually)
 
         //then
         val finalAggregateBalance = accounts.sumBy { it.getBalance() }
-        assertThat(finalAggregateBalance).isEqualTo(aggregateBalance)
+
+        assertThat(finalAggregateBalance)
+                .`as`("Law of conservation of quantity of money is violated")
+                .isEqualTo(aggregateBalance)
     }
 }
