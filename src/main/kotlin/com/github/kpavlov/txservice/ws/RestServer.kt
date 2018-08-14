@@ -1,7 +1,7 @@
 package com.github.kpavlov.txservice.ws
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.netty.channel.Channel
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.glassfish.jersey.netty.httpserver.NettyHttpContainerProvider
@@ -22,8 +22,11 @@ class RestServer(host: String = "localhost", port: Int = 8080) {
     fun start() {
         val resourceConfig = with(ResourceConfig.forApplication(JerseyApplication)) {
             register(JacksonFeature::class.java)
+            register(UnhandledExceptionMapper())
             register(ContextResolver<ObjectMapper> {
-                ObjectMapper().registerModule(KotlinModule())
+                ObjectMapper()
+                        .findAndRegisterModules()
+                        .setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY)
             })
             this
         }

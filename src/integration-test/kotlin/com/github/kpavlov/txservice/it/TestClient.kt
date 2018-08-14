@@ -39,7 +39,6 @@ object TestClient {
 
         val extract = requestSpecification
                 .log().uri()
-                .log().body()
                 .body(req)
                 .contentType(ContentType.JSON)
                 .post("/accounts")
@@ -53,10 +52,11 @@ object TestClient {
         return result.id
     }
 
-    fun createTransaction(amount: BigDecimal,
-                          debitAccountId: AccountId,
-                          creditAccountId: AccountId,
-                          expectedHttpStatus: Int = HttpStatus.SC_CREATED) {
+    fun <T> createTransaction(amount: BigDecimal,
+                              debitAccountId: AccountId,
+                              creditAccountId: AccountId,
+                              expectedHttpStatus: Int = HttpStatus.SC_OK,
+                              expectedResponse: Class<T>? = null): T {
         val requestSpecification = RestAssured
                 .given()
 
@@ -67,7 +67,7 @@ object TestClient {
             this
         }
 
-        requestSpecification
+        val validatableResponse = requestSpecification
                 .log().uri()
                 .log().body()
                 .body(req)
@@ -76,9 +76,14 @@ object TestClient {
                 .then()
                 .log().headers()
                 .statusCode(expectedHttpStatus)
-//                .extract()
-//                .body().`as`(expectedResponse)
 
-//        return response
+        return if (expectedResponse !== null) {
+            validatableResponse
+                    .log().body()
+                    .extract()
+                    .body().`as`(expectedResponse)
+        } else {
+            null as T
+        }
     }
 }

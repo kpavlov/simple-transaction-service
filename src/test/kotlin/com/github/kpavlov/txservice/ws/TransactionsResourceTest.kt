@@ -1,10 +1,12 @@
 package com.github.kpavlov.txservice.ws
 
 import com.github.kpavlov.txservice.domain.AccountId
+import com.github.kpavlov.txservice.service.TransactionResult
 import com.github.kpavlov.txservice.service.TransactionService
 import com.github.kpavlov.txservice.ws.model.CreateTransactionRequest
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.apache.commons.lang3.RandomUtils.nextInt
 import org.apache.http.HttpStatus
 import org.assertj.core.api.Assertions.assertThat
@@ -40,11 +42,15 @@ internal class TransactionsResourceTest {
 
     @Test
     fun shouldCreateTransaction() {
+        // given
+        whenever(transactionService.transfer(amountCents, debitAccountId, creditAccountId))
+                .thenReturn(TransactionResult.SUCCESS)
+
         // when
         val response = subject.createTransaction(request)
 
         //then
-        assertThat(response.status).`as`("httpStatus").isEqualTo(HttpStatus.SC_CREATED)
+        assertThat(response.status).`as`("httpStatus").isEqualTo(HttpStatus.SC_OK)
         assertThat(response.entity).`as`("entity").isNull()
         verify(transactionService).transfer(amountCents, debitAccountId, creditAccountId)
     }

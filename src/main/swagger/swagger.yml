@@ -94,8 +94,8 @@ paths:
         schema:
           $ref: '#/definitions/CreateTransactionRequest'
       responses:
-        201:
-          description: Transaction created
+        200:
+          description: Transaction completed
         400:
           $ref: '#/responses/400BadRequest'
         422:
@@ -162,6 +162,6 @@ definitions:
         type: integer
       code:
         $ref: '#/definitions/ErrorCode'
-      detail:
+      details:
         description: Specific error description
         type: string

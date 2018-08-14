@@ -55,4 +55,6 @@ The money transfer operation consists of 3 steps:
    since held amount is not reported to the client, but I want to keep it for clarity. 
 
 **Why not use two locks, one per account?** Because it is hard to guarantee lock ordering.
-I would prefer to execute transactions one at a time, e.g. to use [LMAX Disruptor](https://lmax-exchange.github.io/disruptor).
+If strong consistency is the requirement, then I would prefer to execute transactions one at a time, 
+e.g. by using [LMAX Disruptor](https://lmax-exchange.github.io/disruptor) 
+or by submitting tasks to `Executors.newSingleThreadExecutor()`.
