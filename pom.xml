@@ -15,9 +15,10 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- versions -->
         <assertj.version>3.10.0</assertj.version>
+        <jaxb.version>2.3.0</jaxb.version>
         <jersey.version>2.27</jersey.version>
-        <junit-jupiter.version>5.2.0</junit-jupiter.version>
         <junit-engine.version>5.0.0</junit-engine.version>
+        <junit-jupiter.version>5.2.0</junit-jupiter.version>
         <junit-platform.version>1.2.0</junit-platform.version>
         <kotlin.version>1.2.60</kotlin.version>
         <mockito-kotlin.version>1.6.0</mockito-kotlin.version>
@@ -73,7 +74,19 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.0</version>
+            <version>${jaxb.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jaxb.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>${jaxb.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -254,6 +267,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -374,6 +388,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
