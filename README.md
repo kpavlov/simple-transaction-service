@@ -16,7 +16,7 @@ Following assumptions were made for the sake of simplicity:
 
 * JDK 8+
 * Kotlin 1.2 (1.2.60)
-* Jersey2 + Netty 4.1
+* Jersey2
 * Jackson
 * Open API 2.0 (Swagger)
 * Maven 3
@@ -58,3 +58,44 @@ The money transfer operation consists of 3 steps:
 If strong consistency is the requirement, then I would prefer to execute transactions one at a time, 
 e.g. by using [LMAX Disruptor](https://lmax-exchange.github.io/disruptor) 
 or by submitting tasks to `Executors.newSingleThreadExecutor()`.
+
+## Building and Running Service
+
+To build and run server execute:
+
+    mvn clean verify -B
+    java -jar target/simple-transaction-service-exec.jar
+    
+or just run:
+
+    ./build-and-run.sh
+
+## Using API
+    
+You may run `./transfer-money.sh` script to test the API.    
+    
+1. Create account:
+    
+        curl -v --request POST \
+            --data '{"initialBalance": 1005.00}' \
+            --header "Content-Type: application/json" \
+            http://localhost:8080/accounts
+        
+2. Get account details:
+
+        curl -v "http://localhost:8080/accounts/$ACCOUNT_ID"
+    
+3. Transfer money:
+    
+        TRANSFER_REQUEST="
+        {
+            \"amount\": 15.00,
+            \"debitAccount\":\"$DEBIT_ACCOUNT_ID\",
+            \"creditAccount\":\"$CREDIT_ACCOUNT_ID\"
+        }"
+        curl -d "$TRANSFER_REQUEST" \
+             -H "Content-Type: application/json" \
+            http://localhost:8080/transactions
+
+    
+   

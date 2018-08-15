@@ -25,7 +25,7 @@ class RestServer(host: String = "localhost", port: Int = 8080) {
 
     fun stop() {
         logger.info("Stopping HTTP server...")
-        server.stop(5)
+        server.stop(1)
         logger.info("HTTP server stopped")
     }
 }
