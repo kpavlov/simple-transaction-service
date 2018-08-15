@@ -2,6 +2,7 @@ package com.github.kpavlov.txservice.ws
 
 import com.github.kpavlov.txservice.domain.Account
 import com.github.kpavlov.txservice.service.AccountService
+import com.github.kpavlov.txservice.ws.api.AccountsApi
 import com.github.kpavlov.txservice.ws.model.AccountDetails
 import com.github.kpavlov.txservice.ws.model.CreateAccountRequest
 import java.math.BigDecimal

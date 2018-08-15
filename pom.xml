@@ -22,7 +22,6 @@
         <junit-platform.version>1.2.0</junit-platform.version>
         <kotlin.version>1.2.60</kotlin.version>
         <mockito-kotlin.version>1.6.0</mockito-kotlin.version>
-        <netty.version>4.1.28.Final</netty.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
 
@@ -39,7 +38,7 @@
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-netty-http</artifactId>
+            <artifactId>jersey-container-jdk-http</artifactId>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
@@ -162,11 +161,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-all</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -190,7 +184,7 @@
                             <addCompileSourceRoot>false</addCompileSourceRoot>
                             <inputSpec>${project.basedir}/src/main/swagger/swagger.yml</inputSpec>
                             <modelPackage>com.github.kpavlov.txservice.ws.model</modelPackage>
-                            <apiPackage>com.github.kpavlov.txservice.ws</apiPackage>
+                            <apiPackage>com.github.kpavlov.txservice.ws.api</apiPackage>
                             <configHelp>false</configHelp>
                             <language>jaxrs-spec</language>
                             <generateApiDocumentation>false</generateApiDocumentation>

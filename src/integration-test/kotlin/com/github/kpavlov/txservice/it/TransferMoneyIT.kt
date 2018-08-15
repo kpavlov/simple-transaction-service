@@ -54,16 +54,20 @@ class TransferMoneyIT : AbstractIT() {
         val error = TestClient.createTransaction(amount = BigDecimal("0.01"),
                 debitAccountId = unknownAccountId,
                 creditAccountId = accountId2,
-                expectedHttpStatus = 404,
+                expectedHttpStatus = 422,
                 expectedResponse = ErrorResponse::class.java
         )
 
         // then
         assertThat(error).isNotNull
-        assertThat(error.status).isEqualTo(404)
+        assertThat(error.status).isEqualTo(422)
         assertThat(error.code).isEqualTo(ErrorCode.DEBIT_ACCOUNT_NOT_FOUND)
 
         // and
+        verifyBalancesNotChanged()
+    }
+
+    private fun verifyBalancesNotChanged() {
         val balance1AfterTransfer = TestClient.getAccountDetails(accountId1).balance.movePointRight(2).toInt()
         val balance2AfterTransfer = TestClient.getAccountDetails(accountId2).balance.movePointRight(2).toInt()
 
@@ -80,20 +84,16 @@ class TransferMoneyIT : AbstractIT() {
         val error = TestClient.createTransaction(amount = BigDecimal("0.01"),
                 debitAccountId = accountId1,
                 creditAccountId = unknownAccountId,
-                expectedHttpStatus = 404,
+                expectedHttpStatus = 422,
                 expectedResponse = ErrorResponse::class.java
         )
 
         // then
         assertThat(error).isNotNull
-        assertThat(error.status).isEqualTo(404)
+        assertThat(error.status).isEqualTo(422)
         assertThat(error.code).isEqualTo(ErrorCode.CREDIT_ACCOUNT_NOT_FOUND)
 
         // and
-        val balance1AfterTransfer = TestClient.getAccountDetails(accountId1).balance.movePointRight(2).toInt()
-        val balance2AfterTransfer = TestClient.getAccountDetails(accountId2).balance.movePointRight(2).toInt()
-
-        assertThat(balance1AfterTransfer).isEqualTo(balance1Cents)
-        assertThat(balance2AfterTransfer).isEqualTo(balance2Cents)
+        verifyBalancesNotChanged()
     }
 }

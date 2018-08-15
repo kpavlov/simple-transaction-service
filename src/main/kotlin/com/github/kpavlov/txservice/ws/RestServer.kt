@@ -1,38 +1,23 @@
 package com.github.kpavlov.txservice.ws
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.ObjectMapper
-import io.netty.channel.Channel
-import org.glassfish.jersey.jackson.JacksonFeature
-import org.glassfish.jersey.netty.httpserver.NettyHttpContainerProvider
-import org.glassfish.jersey.server.ResourceConfig
+import com.sun.net.httpserver.HttpServer
+import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory
 import org.slf4j.LoggerFactory
-import java.net.URI
-import javax.ws.rs.ext.ContextResolver
-
+import javax.ws.rs.core.UriBuilder
 
 class RestServer(host: String = "localhost", port: Int = 8080) {
 
-    private val BASE_URI = URI.create("http://$host:$port/")
+    private val BASE_URI = UriBuilder.fromUri("http://$host/").port(port).build()
 
     private val logger = LoggerFactory.getLogger(RestServer::class.java)
 
-    private lateinit var server: Channel
+    private lateinit var server: HttpServer
 
     fun start() {
-        val resourceConfig = with(ResourceConfig.forApplication(JerseyApplication)) {
-            register(JacksonFeature::class.java)
-            register(UnhandledExceptionMapper())
-            register(ContextResolver<ObjectMapper> {
-                ObjectMapper()
-                        .findAndRegisterModules()
-                        .setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY)
-            })
-            this
-        }
+        val resourceConfig = JerseyApplication()
 
         logger.info("Starting HTTP server on {}", BASE_URI)
-        server = NettyHttpContainerProvider.createHttp2Server(BASE_URI, resourceConfig, null)
+        server = JdkHttpServerFactory.createHttpServer(BASE_URI, resourceConfig)
         logger.info("HTTP server started")
 
         Runtime.getRuntime().addShutdownHook(Thread(Runnable { stop() }))
@@ -40,7 +25,7 @@ class RestServer(host: String = "localhost", port: Int = 8080) {
 
     fun stop() {
         logger.info("Stopping HTTP server...")
-        server.close().await()
+        server.stop(5)
         logger.info("HTTP server stopped")
     }
 }
