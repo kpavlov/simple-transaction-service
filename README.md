@@ -71,6 +71,11 @@ or just run:
     ./build-and-run.sh
 
 ## Using API
+
+API specification is defined in 
+[Swagger file (OAS2)](https://github.com/kpavlov/simple-transaction-service/blob/master/src/main/swagger/swagger.yml) 
+([Editor View](http://editor.swagger.io/?url=https://raw.githubusercontent.com/kpavlov/simple-transaction-service/master/src/main/swagger/swagger.yml)) 
+
     
 You may run `./transfer-money.sh` script to test the API.    
     
